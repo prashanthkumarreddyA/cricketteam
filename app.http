@@ -27,6 +27,6 @@ Content-Type: application/json
 ###
 
 
-DELETE http://localhost:3001/players/12/
+DELETE http://localhost:3001/players/2/
 
 ###
