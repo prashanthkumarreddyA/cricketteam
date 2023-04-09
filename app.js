@@ -26,6 +26,15 @@ const initializeDBAndServer = async () => {
 };
 initializeDBAndServer();
 
+const convertDbObjectToResponseObject = (dbObject) => {
+  return {
+    playerId: dbObject.player_id,
+    playerName: dbObject.player_name,
+    jerseyNumber: dbObject.jersey_number,
+    role: dbObject.role,
+  };
+};
+
 // Returns a list of all players in the team
 app.get("/players/", async (request, response) => {
   const getCricketQuery = `
@@ -34,7 +43,11 @@ app.get("/players/", async (request, response) => {
     FROM
       cricket_team;`;
   const cricketArray = await db.all(getCricketQuery);
-  response.send(cricketArray);
+  response.send(
+    cricketArray.map((eachPlayer) =>
+      convertDbObjectToResponseObject(eachPlayer)
+    )
+  );
 });
 
 //Creates a new player in the team (database). player_id is auto-incremented
@@ -66,7 +79,7 @@ app.get("/players/:playerId/", async (request, response) => {
     WHERE
       player_id = ${playerId};`;
   const player = await db.get(getPlayerQuery);
-  response.send(player);
+  response.send(convertDbObjectToResponseObject(player));
 });
 
 //Updates the details of a player in the team (database) based on the player ID
