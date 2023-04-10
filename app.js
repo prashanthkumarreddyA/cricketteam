@@ -25,7 +25,6 @@ const initializeDBAndServer = async () => {
   }
 };
 initializeDBAndServer();
-
 const convertDbObjectToResponseObject = (dbObject) => {
   return {
     playerId: dbObject.player_id,
